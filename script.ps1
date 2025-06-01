@@ -1,5 +1,6 @@
 $url = "git@github.com:deadlonerx/git_repos.git"
 $path = "D:\git_repos\1"
+Push-Location
 git clone $url $path
 $desc = git describe --tags
 Write-Output $desc
@@ -14,7 +15,7 @@ if ($desc.Contains("-")){
 	Set-Location $path
 	git tag -a $newTag -m "Version $newTag"
 	git push origin $newTag
-	Start-Sleep -Seconds 5
+	Pop-Location
 } else {
 	Write-Output "No changes"
 }

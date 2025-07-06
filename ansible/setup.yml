@@ -1,0 +1,25 @@
+- name: Установка пакетов и создание пользователя
+  hosts: containers
+  become: true
+  tasks:
+    - name: Установить нужные пакеты
+      apt:
+        name: "{{ packages }}"
+        state: present
+        update_cache: true
+
+    - name: Создать пользователя
+      user:
+        name: "{{ new_user }}"
+        state: present
+
+    - name: Получить имя пользователя с помощью whoami от имени devops
+      shell: whoami
+      become: true
+      become_method: su
+      become_user: "{{ new_user }}"
+      register: whoami_result
+
+    - name: Показать результат
+      debug:
+        var: whoami_result.stdout
